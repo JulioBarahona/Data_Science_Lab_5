@@ -9,19 +9,21 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 if (!require("readr"))    {install.packages("readr");   library("readr")}
 if (!require("dplyr"))    {install.packages("dplyr");   library("dplyr")}
+if (!require("kableExtra"))    {install.packages("kableExtra");   library("kableExtra")}
 ```
 
 ## Leyendo los datos
 ```{r reading_data, message=FALSE, warning=FALSE}
-Original_data <- read_csv("data/GrammarandProductReviews.csv")
+original_data <- read_csv("data/GrammarandProductReviews.csv")
 ```
 
-## Including Plots
+## Analisis Explorativo
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+### Tipos de datos
+```{r data }
+types <- as.data.frame(colnames(original_data))
+types$tipo <- sapply(original_data, class)
+kable(types) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
