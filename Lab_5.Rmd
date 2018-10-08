@@ -41,8 +41,8 @@ summary(original_data$reviews.rating)
 quantile(original_data$reviews.rating, probs = c(0,.25,.5,.75,1))
 ```
   
-```{r boxplot_diagrams warning=FALSE,message=FALSE,error=FALSE}
-boxplot(original_data$reviews.rating ~ original_data$reviews.userProvince, main = 'Distribusion calificiones', ylab =  'Puntaje', las = 1)
+```{r boxplot_diagrams, warning=FALSE,message=FALSE,error=FALSE}
+boxplot(original_data$reviews.rating ~ original_data$reviews.userProvince, main = 'Distribusion calificiones', ylab = 'Puntaje', las = 1)
 ```
 
 Se puede observar que la mayoria de los puntajes estan de 3 para arriba (a nivel general) y se mantiene por provincia
@@ -74,6 +74,7 @@ emotion_words_count <- original_data %>%
 emotions_to_total_words <- total_words_count %>%
      left_join(emotion_words_count, by="brand") %>%
                mutate(percent_emotions=round((emotions/total)*100,1))
+#hello there
 ```
 
 
