@@ -48,4 +48,32 @@ boxplot(original_data$reviews.rating ~ original_data$reviews.userProvince, main 
 Se puede observar que la mayoria de los puntajes estan de 3 para arriba (a nivel general) y se mantiene por provincia
 
 
+## Analisis de palabras emotivas (frecuencia y proporcion)
+```{r}
+original_data$reviews.text <- as.character(original_data$reviews.text)
+
+total_words_count <- original_data %>%
+    unnest_tokens(word, reviews.text) %>%  
+    anti_join(stop_words, by = "word") %>%                  
+    filter(!grepl('[0-9]', word)) %>%
+   left_join(get_sentiments("nrc"), by = "word") %>%                        
+    group_by(brand) %>%
+    summarize(total= n()) %>%
+    ungroup()
+
+emotion_words_count <- original_data %>% 
+  unnest_tokens(word, reviews.text) %>%                           
+  anti_join(stop_words, by = "word") %>%                  
+  filter(!grepl('[0-9]', word)) %>%
+  left_join(get_sentiments("nrc"), by = "word") %>%
+  filter(!(sentiment == "negative" | sentiment == "positive" | sentiment == "NA")) %>%
+  group_by(brand) %>%
+  summarize(emotions= n()) %>%
+  ungroup()
+
+emotions_to_total_words <- total_words_count %>%
+     left_join(emotion_words_count, by="brand") %>%
+               mutate(percent_emotions=round((emotions/total)*100,1))
+```
+
 
