@@ -10,11 +10,17 @@ knitr::opts_chunk$set(echo = TRUE)
 if (!require("readr"))    {install.packages("readr");   library("readr")}
 if (!require("dplyr"))    {install.packages("dplyr");   library("dplyr")}
 if (!require("kableExtra"))    {install.packages("kableExtra");   library("kableExtra")}
+if (!require("ggplot2"))    {install.packages("ggplot2");   library("ggplot2")}
+if (!require("ggpubr"))    {install.packages("ggpubr");   library("ggpubr")}
+if (!require("tidyverse"))    {install.packages("tidyverse");   library("tidyverse")}
+if (!require("tidytext"))    {install.packages("tidytext");   library("tidytext")}
+if (!require("RColorBrewer"))    {install.packages("RColorBrewer");   library("RColorBrewer")}
+if (!require("gplots"))    {install.packages("gplots");   library("gplots")}
 ```
 
 ## Leyendo los datos
 ```{r reading_data, message=FALSE, warning=FALSE}
-original_data <- read_csv("data/GrammarandProductReviews.csv")
+original_data <- read.csv("data/GrammarandProductReviews.csv", stringsAsFactors = TRUE)
 ```
 
 ## Analisis Explorativo
@@ -26,4 +32,20 @@ types$tipo <- sapply(original_data, class)
 kable(types) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
+
+### caja y bigotes de los datos numericos
+
+Distribucion de percentiles
+```{r prob_revies}
+summary(original_data$reviews.rating)
+quantile(original_data$reviews.rating, probs = c(0,.25,.5,.75,1))
+```
+  
+```{r boxplot_diagrams warning=FALSE,message=FALSE,error=FALSE}
+boxplot(original_data$reviews.rating ~ original_data$reviews.userProvince, main = 'Distribusion calificiones', ylab =  'Puntaje', las = 1)
+```
+
+Se puede observar que la mayoria de los puntajes estan de 3 para arriba (a nivel general) y se mantiene por provincia
+
+
 
